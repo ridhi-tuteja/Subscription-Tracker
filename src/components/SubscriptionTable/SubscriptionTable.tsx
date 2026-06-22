@@ -112,9 +112,29 @@ function SubscriptionTable({
 
               <td>
 
-                ₹{sub.cost}
+<span
 
-              </td>
+className={
+
+sub.cost>1000
+
+?
+
+"text-red-500 font-bold"
+
+:
+
+""
+
+}
+
+>
+
+₹{sub.cost}
+
+</span>
+
+</td>
 
               <td>
 
