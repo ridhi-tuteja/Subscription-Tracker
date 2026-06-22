@@ -1,6 +1,4 @@
-import type { Subscription }
-
-from "../types/subscription";
+import type { Subscription } from "../types/subscription";
 
 export const daysUntilRenewal = (
   renewalDate: string
@@ -25,23 +23,27 @@ export const daysUntilRenewal = (
     (1000 * 60 * 60 * 24)
 
   );
-
 };
 
 export const isRenewingSoon = (
   renewalDate: string
 ) => {
 
-  return (
+  const days =
 
     daysUntilRenewal(
-
       renewalDate
+    );
 
-    ) <= 7
+  return (
+
+    days >= 0
+
+    &&
+
+    days <= 7
 
   );
-
 };
 
 export const getUpcomingRenewals = (
@@ -57,9 +59,7 @@ export const getUpcomingRenewals = (
       &&
 
       isRenewingSoon(
-
         sub.renewalDate
-
       )
 
   ).length;

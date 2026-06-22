@@ -1,8 +1,8 @@
 import {
 
- useState,
+ useEffect,
 
- useEffect
+ useState
 
 }
 
@@ -24,12 +24,11 @@ import type {
 
  Subscription
 
-
 }
 
 from "../types/subscription";
 
-function Dashboard(){
+function Dashboard() {
 
  const [
 
@@ -37,15 +36,15 @@ function Dashboard(){
 
  setSubscriptions
 
- ]=useState<
+ ] = useState<
 
  Subscription[]
 
  >(
 
- ()=>{
+ () => {
 
- const saved=
+ const saved =
 
  localStorage.getItem(
 
@@ -67,7 +66,7 @@ function Dashboard(){
 
  );
 
- useEffect(()=>{
+ useEffect(() => {
 
  localStorage.setItem(
 
@@ -81,37 +80,49 @@ function Dashboard(){
 
  );
 
- },[subscriptions]);
+ },
 
- const addSubscription=(
+ [subscriptions]
 
- subscription:Subscription
+ );
 
- )=>{
+ const addSubscription = (
+
+ subscription: Subscription
+
+ ) => {
 
  setSubscriptions(
 
- prev=>
+ prev =>
 
- [...prev,subscription]
+ [
+
+ ...prev,
+
+ subscription
+
+ ]
 
  );
 
  };
 
- const toggleSubscription=(
+ const toggleSubscription = (
 
- id:string
+ id: string
 
- )=>{
+ ) => {
 
  setSubscriptions(
 
- prev=>
+ prev =>
 
- prev.map(sub=>
+ prev.map(
 
- sub.id===id
+ sub =>
+
+ sub.id === id
 
  ?
 
@@ -121,7 +132,9 @@ function Dashboard(){
 
  status:
 
- sub.status==="Active"
+ sub.status ===
+
+ "Active"
 
  ?
 
@@ -143,13 +156,13 @@ function Dashboard(){
 
  };
 
- return(
+ return (
 
  <div
 
  className=
 
- "min-h-screen bg-gray-100 p-8"
+ "min-h-screen bg-slate-100 p-8"
 
  >
 

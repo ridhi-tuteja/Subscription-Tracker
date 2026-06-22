@@ -1,4 +1,8 @@
-import { useState }
+import {
+
+ useState
+
+}
 
 from "react";
 
@@ -10,21 +14,25 @@ import type {
 
 from "../../types/subscription";
 
-type Props={
+type Props = {
 
- addSubscription:(
+ addSubscription:
 
- subscription:Subscription
+ (
 
- )=>void;
+ subscription:
 
-}
+ Subscription
+
+ ) => void;
+
+};
 
 function EntryForm({
 
  addSubscription
 
-}:Props){
+}: Props) {
 
  const [
 
@@ -32,7 +40,7 @@ function EntryForm({
 
  setServiceName
 
- ]=useState("");
+ ] = useState("");
 
  const [
 
@@ -40,7 +48,7 @@ function EntryForm({
 
  setCost
 
- ]=useState(0);
+ ] = useState(0);
 
  const [
 
@@ -48,7 +56,7 @@ function EntryForm({
 
  setBillingCycle
 
- ]=useState<
+ ] = useState<
 
  "Monthly"
 
@@ -64,19 +72,41 @@ function EntryForm({
 
  setRenewalDate
 
- ]=useState("");
+ ] = useState("");
 
- const handleSubmit=(
+ const handleSubmit = (
 
- e:React.FormEvent
+ e: React.FormEvent
 
- )=>{
+ ) => {
 
  e.preventDefault();
 
- const newSub={
+ if (
 
- id:crypto.randomUUID(),
+ !serviceName ||
+
+ !cost ||
+
+ !renewalDate
+
+ ) {
+
+ alert(
+
+ "Fill all fields"
+
+ );
+
+ return;
+
+ }
+
+ const newSub = {
+
+ id:
+
+ crypto.randomUUID(),
 
  serviceName,
 
@@ -86,7 +116,9 @@ function EntryForm({
 
  renewalDate,
 
- status:"Active"
+ status:
+
+ "Active"
 
  } as Subscription;
 
@@ -110,7 +142,7 @@ function EntryForm({
 
  };
 
- return(
+ return (
 
  <form
 
@@ -118,7 +150,7 @@ function EntryForm({
 
  className=
 
- "bg-white p-6 rounded-xl shadow"
+ "bg-white rounded-xl shadow p-6"
 
  >
 
@@ -144,6 +176,10 @@ function EntryForm({
 
  <input
 
+ className=
+
+ "border rounded p-2"
+
  placeholder="Service"
 
  value={serviceName}
@@ -159,6 +195,10 @@ function EntryForm({
  />
 
  <input
+
+ className=
+
+ "border rounded p-2"
 
  type="number"
 
@@ -181,6 +221,10 @@ function EntryForm({
  />
 
  <select
+
+ className=
+
+ "border rounded p-2"
 
  value={billingCycle}
 
@@ -216,6 +260,10 @@ function EntryForm({
 
  <input
 
+ className=
+
+ "border rounded p-2"
+
  type="date"
 
  value={renewalDate}
@@ -236,7 +284,7 @@ function EntryForm({
 
  className=
 
- "mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+ "mt-4 bg-blue-600 text-white px-4 py-2 rounded"
 
  >
 

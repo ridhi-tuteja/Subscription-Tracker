@@ -18,21 +18,21 @@ import {
 
 from "../../services/renewalCalculator";
 
-type Props={
+type Props = {
 
  subscriptions:
 
  Subscription[];
 
-}
+};
 
 function MetricsCards({
 
  subscriptions
 
-}:Props){
+}: Props) {
 
- const burn=
+ const burn =
 
  calculateBurnRate(
 
@@ -40,7 +40,7 @@ function MetricsCards({
 
  );
 
- const renewals=
+ const renewals =
 
  getUpcomingRenewals(
 
@@ -48,13 +48,13 @@ function MetricsCards({
 
  );
 
- return(
+ return (
 
  <div
 
  className=
 
- "grid md:grid-cols-2 gap-6"
+ "grid grid-cols-1 md:grid-cols-2 gap-6"
 
  >
 

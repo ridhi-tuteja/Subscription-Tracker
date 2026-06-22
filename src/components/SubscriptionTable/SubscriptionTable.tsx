@@ -14,7 +14,7 @@ import {
 
 from "../../services/renewalCalculator";
 
-type Props={
+type Props = {
 
  subscriptions:
 
@@ -22,9 +22,13 @@ type Props={
 
  toggleSubscription:
 
- (id:string)=>void;
+ (
 
-}
+ id: string
+
+ ) => void;
+
+};
 
 function SubscriptionTable({
 
@@ -32,15 +36,15 @@ function SubscriptionTable({
 
  toggleSubscription
 
-}:Props){
+}: Props) {
 
- return(
+ return (
 
  <div
 
  className=
 
- "bg-white p-6 rounded-xl shadow"
+ "bg-white rounded-xl shadow p-6 overflow-x-auto"
 
  >
 
@@ -48,7 +52,7 @@ function SubscriptionTable({
 
  className=
 
- "text-2xl font-bold mb-4"
+ "text-2xl font-bold mb-6"
 
  >
 
@@ -66,21 +70,55 @@ function SubscriptionTable({
 
  <thead>
 
- <tr>
+ <tr
 
- <th>Service</th>
+ className=
 
- <th>Cost</th>
+ "border-b"
 
- <th>Cycle</th>
+ >
 
- <th>Renewal</th>
+ <th>
 
- <th>Alert</th>
+ Service
 
- <th>Status</th>
+ </th>
 
- <th>Action</th>
+ <th>
+
+ Cost
+
+ </th>
+
+ <th>
+
+ Cycle
+
+ </th>
+
+ <th>
+
+ Renewal
+
+ </th>
+
+ <th>
+
+ Alert
+
+ </th>
+
+ <th>
+
+ Status
+
+ </th>
+
+ <th>
+
+ Action
+
+ </th>
 
  </tr>
 
@@ -150,7 +188,11 @@ function SubscriptionTable({
 
  ?
 
- "⚠ Renewing Soon"
+ <span>
+
+ ⚠ Renewing Soon
+
+ </span>
 
  :
 
@@ -169,6 +211,10 @@ function SubscriptionTable({
  <td>
 
  <button
+
+ className=
+
+ "bg-blue-500 text-white px-3 py-1 rounded"
 
  onClick={()=>
 

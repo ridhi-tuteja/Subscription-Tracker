@@ -1,52 +1,39 @@
-import type { Subscription }
+import type { Subscription } from "../types/subscription";
 
-from "../types/subscription";
+export const getMonthlyCost = (
+  subscription: Subscription
+) => {
 
-export const getMonthlyCost=(
+  if (
+    subscription.billingCycle === "Monthly"
+  ) {
 
- subscription:Subscription
+    return subscription.cost;
 
-)=>{
+  }
 
- if(
-
- subscription.billingCycle==="Monthly"
-
- ){
-
-  return subscription.cost;
-
- }
-
- return subscription.cost/12;
-
+  return subscription.cost / 12;
 };
 
+export const calculateBurnRate = (
+  subscriptions: Subscription[]
+) => {
 
-export const calculateBurnRate=(
+  return subscriptions
 
- subscriptions:Subscription[]
+    .filter(
+      sub => sub.status === "Active"
+    )
 
-)=>{
+    .reduce(
 
- return subscriptions
+      (total, sub) =>
 
- .filter(
+        total +
 
- sub=>sub.status==="Active"
+        getMonthlyCost(sub),
 
- )
+      0
 
- .reduce(
-
- (total,sub)=>
-
- total+
-
- getMonthlyCost(sub)
-
- ,0
-
- );
-
+    );
 };
