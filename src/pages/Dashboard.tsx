@@ -1,252 +1,195 @@
 import {
+  useState,
+  useEffect
+} from "react";
 
- useEffect,
+import MetricsCards from "../components/Metrics/MetricsCards";
 
- useState
+import EntryForm from "../components/EntryForm/EntryForm";
 
-}
+import SubscriptionTable from "../components/SubscriptionTable/SubscriptionTable";
 
-from "react";
-
-import MetricsCards
-
-from "../components/Metrics/MetricsCards";
-
-import EntryForm
-
-from "../components/EntryForm/EntryForm";
-
-import SubscriptionTable
-
-from "../components/SubscriptionTable/SubscriptionTable";
-
-import type {
-
- Subscription
-
-}
-
-from "../types/subscription";
+import type { Subscription } from "../types/subscription";
 
 function Dashboard() {
 
- const [
+  const [
 
- subscriptions,
+    subscriptions,
 
- setSubscriptions
+    setSubscriptions
 
- ] = useState<
+  ] = useState<Subscription[]>(() => {
 
- Subscription[]
+    const saved = localStorage.getItem(
 
- >(
+      "subscriptions"
 
- () => {
+    );
 
- const saved =
+    return saved
 
- localStorage.getItem(
+      ? JSON.parse(saved)
 
- "subscriptions"
+      : [];
 
- );
+  });
 
- return saved
+  useEffect(() => {
 
- ?
+    localStorage.setItem(
 
- JSON.parse(saved)
+      "subscriptions",
 
- :
+      JSON.stringify(
 
- [];
+        subscriptions
 
- }
+      )
 
- );
+    );
 
- useEffect(() => {
+  }, [subscriptions]);
 
- localStorage.setItem(
+  const addSubscription = (
 
- "subscriptions",
+    subscription: Subscription
 
- JSON.stringify(
+  ) => {
 
- subscriptions
+    setSubscriptions(
 
- )
+      prev => [
 
- );
+        ...prev,
 
- },
+        subscription
 
- [subscriptions]
+      ]
 
- );
+    );
 
- const addSubscription = (
+  };
 
- subscription: Subscription
+  const toggleSubscription = (
 
- ) => {
+    id: string
 
- setSubscriptions(
+  ) => {
 
- prev =>
+    setSubscriptions(
 
- [
+      prev =>
 
- ...prev,
+        prev.map(
 
- subscription
+          sub =>
 
- ]
+            sub.id === id
 
- );
+              ? {
 
- };
+                  ...sub,
 
- const toggleSubscription = (
+                  status:
 
- id: string
+                    sub.status === "Active"
 
- ) => {
+                      ? "Paused"
 
- setSubscriptions(
+                      : "Active"
 
- prev =>
+                }
 
- prev.map(
+              : sub
 
- sub =>
+        )
 
- sub.id === id
+    );
 
- ?
+  };
 
- {
+  const sortedSubscriptions = [
 
- ...sub,
+    ...subscriptions
 
- status:
+  ].sort(
 
- sub.status ===
+    (a, b) =>
 
- "Active"
+      new Date(
 
- ?
+        a.renewalDate
 
- "Paused"
+      ).getTime()
 
- :
+      -
 
- "Active"
+      new Date(
 
- }
+        b.renewalDate
 
- :
+      ).getTime()
 
- sub
+  );
 
- )
+  return (
 
- );
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-8">
 
- };
+      <div className="max-w-6xl mx-auto">
 
- return (
+        <h1 className="text-5xl font-bold text-center mb-10">
 
- <div
+          Subscription Tracker Dashboard
 
- className=
+        </h1>
 
- "min-h-screen bg-slate-100 p-8"
+        <MetricsCards
 
- >
+          subscriptions={subscriptions}
 
- <div
+        />
 
- className=
+        <div className="mt-8">
 
- "max-w-6xl mx-auto"
+          <EntryForm
 
- >
+            addSubscription={
 
- <h1
+              addSubscription
 
- className=
+            }
 
- "text-5xl font-bold text-center mb-10"
+          />
 
- >
+        </div>
 
- Subscription Tracker Dashboard
+        <div className="mt-8">
 
- </h1>
+          <SubscriptionTable
 
- <MetricsCards
+            subscriptions={
 
- subscriptions={
+              sortedSubscriptions
 
- subscriptions
+            }
 
- }
+            toggleSubscription={
 
- />
+              toggleSubscription
 
- <div
+            }
 
- className=
+          />
 
- "mt-8"
+        </div>
 
- >
+      </div>
 
- <EntryForm
+    </div>
 
- addSubscription={
-
- addSubscription
-
- }
-
- />
-
- </div>
-
- <div
-
- className=
-
- "mt-8"
-
- >
-
- <SubscriptionTable
-
- subscriptions={
-
- subscriptions
-
- }
-
- toggleSubscription={
-
- toggleSubscription
-
- }
-
- />
-
- </div>
-
- </div>
-
- </div>
-
- );
+  );
 
 }
 

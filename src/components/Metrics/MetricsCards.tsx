@@ -1,135 +1,82 @@
-import type { Subscription }
+import type { Subscription } from "../../types/subscription";
 
-from "../../types/subscription";
+import { calculateBurnRate } from "../../services/costCalculator";
 
-import {
-
- calculateBurnRate
-
-}
-
-from "../../services/costCalculator";
-
-import {
-
- getUpcomingRenewals
-
-}
-
-from "../../services/renewalCalculator";
+import { getUpcomingRenewals } from "../../services/renewalCalculator";
 
 type Props = {
-
- subscriptions:
-
- Subscription[];
-
+  subscriptions: Subscription[];
 };
 
-function MetricsCards({
+function MetricsCards({ subscriptions }: Props) {
+  const burn = calculateBurnRate(subscriptions);
 
- subscriptions
+  const renewals = getUpcomingRenewals(subscriptions);
 
-}: Props) {
+  const savings = subscriptions
+    .filter((sub) => sub.status === "Paused")
+    .reduce((total, sub) => {
+      const amount =
+        sub.billingCycle === "Monthly"
+          ? sub.cost
+          : sub.cost / 12;
 
- const burn =
+      return total + amount;
+    }, 0);
 
- calculateBurnRate(
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
- subscriptions
+      <div className="bg-white rounded-2xl shadow-lg p-6 hover:scale-105 transition duration-200">
 
- );
+        <h2 className="text-gray-500 font-semibold">
 
- const renewals =
+          💰 Monthly Burn
 
- getUpcomingRenewals(
+        </h2>
 
- subscriptions
+        <p className="text-4xl font-bold mt-3 text-red-500">
 
- );
+          ₹{burn.toFixed(2)}
 
- return (
+        </p>
 
- <div
+      </div>
 
- className=
+      <div className="bg-white rounded-2xl shadow-lg p-6 hover:scale-105 transition duration-200">
 
- "grid grid-cols-1 md:grid-cols-2 gap-6"
+        <h2 className="text-gray-500 font-semibold">
 
- >
+          🔔 Upcoming Renewals
 
- <div
+        </h2>
 
- className=
+        <p className="text-4xl font-bold mt-3 text-yellow-500">
 
- "bg-white rounded-xl shadow p-6"
+          {renewals}
 
- >
+        </p>
 
- <h2
+      </div>
 
- className=
+      <div className="bg-white rounded-2xl shadow-lg p-6 hover:scale-105 transition duration-200">
 
- "text-gray-500"
+        <h2 className="text-gray-500 font-semibold">
 
- >
+          💸 Potential Savings
 
- Total Monthly Burn
+        </h2>
 
- </h2>
+        <p className="text-4xl font-bold mt-3 text-green-600">
 
- <p
+          ₹{savings.toFixed(2)}
 
- className=
+        </p>
 
- "text-4xl font-bold mt-2"
+      </div>
 
- >
-
- ₹{burn.toFixed(2)}
-
- </p>
-
- </div>
-
- <div
-
- className=
-
- "bg-white rounded-xl shadow p-6"
-
- >
-
- <h2
-
- className=
-
- "text-gray-500"
-
- >
-
- Upcoming Renewals
-
- </h2>
-
- <p
-
- className=
-
- "text-4xl font-bold mt-2"
-
- >
-
- {renewals}
-
- </p>
-
- </div>
-
- </div>
-
- );
-
+    </div>
+  );
 }
 
 export default MetricsCards;
